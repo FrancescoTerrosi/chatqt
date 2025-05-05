@@ -6,20 +6,26 @@ import time
 
 class ChatBot:
 
+
     def __init__(self, parent=None):
         self.client = OpenAI(
             api_key=os.getenv('OPENAI_KEY', None)
         )
         
-        #self.history = [{"role": "developer", "content": "Sei uno chef esperto e riconosciuto in tutto il mondo. Hai la capacità di creare piatti sopraffini da ingredienti poveri. Sei qui per aiutare l'utente a creare una ricetta gourmet con gli ingredienti che ti elencherà. Devi usare TUTTI gli ingredienti. Se decidi di scartarne uno devi motivare la scelta e se possibile proporre un'alternativa."}]
-        self.history = [{"role": "developer", "content": "Sei un bambino di 3 anni con la conoscenza di Piero Angela, Alberto Angela e Alessandro Barbero combinati in un'unico essere. Il tuo scopo è simularne il comportamento all'utente, rispondendo alle sue domande sulla storia."}]
-        #self.history = [{"role": "developer", "content": "Sei un conduttore televisivo esperto su tutto. La tua bravura ti consente di creare domande a risposta multipla (MAX 4 opzioni) sul momento per due giocatori. I due giocatori rispondono uno per volta. Ogni volta che un giocatore sbaglia, prende una penalità. Quando uno dei due giocatori raggiunge 3 penalità, il gioco finisce."}]
-        #self.history = [{"role": "developer", "content": "Sei Gerry Scotti. Devi leggere il testo che ti viene proposto dall'utente come se stessi presentando una puntata di Striscia la Notizia."}, {"role": "user", "content": "Senza lilleri un si lallera trallallero trallalla. Tre tigri contro tre tigri contro tre leopardi!!! L'accendiamo?"}]
+        self.personalities = [
+            {"role": "developer", "content": "Sei uno chef esperto e riconosciuto in tutto il mondo. Hai la capacità di creare piatti sopraffini da ingredienti poveri. Sei qui per aiutare l'utente a creare una ricetta gourmet con gli ingredienti che ti elencherà. Devi usare TUTTI gli ingredienti. Se decidi di scartarne uno devi motivare la scelta e se possibile proporre un'alternativa."},
+            {"role": "developer", "content": "Sei un bambino di 3 anni con la conoscenza di Piero Angela, Alberto Angela e Alessandro Barbero combinati in un'unico essere. Il tuo scopo è simularne il comportamento all'utente, rispondendo alle sue domande sulla storia."},
+            {"role": "developer", "content": "Sei un conduttore televisivo esperto su tutto. La tua bravura ti consente di creare domande a risposta multipla (MAX 4 opzioni) sul momento per due giocatori. I due giocatori rispondono uno per volta. Ogni volta che un giocatore sbaglia, prende una penalità. Quando uno dei due giocatori raggiunge 3 penalità, il gioco finisce."},
+            {"role": "developer", "content": "Sei Gerry Scotti. Devi interpretare il testo che ti viene proposto dall'utente come se stessi presentando una puntata di Striscia la Notizia."}
+        ]
+
+        self.history = [{"role": "developer", "content": "All'utente che interagisce tu appari SOLO come uno dei personaggi indicati dal developer. Non sei in grado di rispondere a domande su campi diversi da quelli specificati."}, self.personalities[0]]
 
     def getHistory(self):
         output = []
         for history in self.history[1:]:
-            output.append(history['content'] + "\n\r")
+            if history['role'] != "developer":
+                output.append(history['content'] + "\n\r")
         return output
 
     def run(self, msg):
@@ -39,4 +45,10 @@ class ChatBot:
 
         return response.output_text
         
+    def getPersonalities(self):
+        return self.personalities
+
+    def setPersonality(self, index):
+        print(self.history)
+        self.history.append(self.personalities[index])
 
