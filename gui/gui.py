@@ -28,14 +28,16 @@ class MainWindow(QMainWindow):
 
     def changePersonality(self):
         itemClicked = self.behaviourTree.currentItem()
-        if itemClicked.text(0) == "CHEF GOURMET":
+        if itemClicked.text(0) == "ESPERTO IUL":
             self.agent.setPersonality(0)
-        if itemClicked.text(0) == "STORICO PER BAMBINI":
+        if itemClicked.text(0) == "CHEF GOURMET":
             self.agent.setPersonality(1)
-        if itemClicked.text(0) == "CONDUTTORE TV":
+        if itemClicked.text(0) == "STORICO PER BAMBINI":
             self.agent.setPersonality(2)
-        if itemClicked.text(0) == "GERRY SCOTTI":
+        if itemClicked.text(0) == "CONDUTTORE TV":
             self.agent.setPersonality(3)
+        if itemClicked.text(0) == "GERRY SCOTTI":
+            self.agent.setPersonality(4)
 
     def __init__(self, agent=None):
         super().__init__()
